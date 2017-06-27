@@ -64,7 +64,7 @@
             file-extensions="tn"
             id="info.iconmaster.tnclipse.typhon"
             name="Typhon source file"
-            priority="normal">
+            priority="high">
       </content-type>
       <file-association
             content-type="info.iconmaster.tnclipse.typhon"
