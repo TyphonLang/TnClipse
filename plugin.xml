@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="Typhon Editor"
+            extensions="tn"
+            icon="icons/typhon_file.gif"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="info.iconmaster.tnclipse.editor.TyphonEditor"
+            id="info.iconmaster.tnclipse.typhon">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="info.iconmaster.tnclipse.preferences.TyphonPreferences">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="info.iconmaster.tnclipse/info.iconmaster.tnclipse.editor"
+            class="info.iconmaster.tnclipse.preferences.PreferencePageEditorColors"
+            id="info.iconmaster.tnclipse.editor.colors"
+            name="Colors">
+      </page>
+      <page
+            class="org.eclipse.ui.internal.dialogs.EmptyPreferencePage"
+            id="info.iconmaster.tnclipse"
+            name="Typhon">
+      </page>
+      <page
+            category="info.iconmaster.tnclipse"
+            class="org.eclipse.ui.internal.dialogs.EmptyPreferencePage"
+            id="info.iconmaster.tnclipse.editor"
+            name="Editor">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="info.iconmaster.tnclipse"
+            name="Typhon">
+      </category>
+      <wizard
+            category="info.iconmaster.tnclipse"
+            class="info.iconmaster.tnclipse.wizards.files.TyphonFileWizard"
+            icon="icons/typhon_file.gif"
+            id="info.iconmaster.tnclipse.typhon"
+            name="Typhon file"
+            project="false">
+         <description>
+            Create a new Typhon file
+         </description>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="tn"
+            id="info.iconmaster.tnclipse.typhon"
+            name="Typhon source file"
+            priority="normal">
+      </content-type>
+      <file-association
+            content-type="info.iconmaster.tnclipse.typhon"
+            file-extensions="tn">
+      </file-association>
+   </extension>
+
+</plugin>
