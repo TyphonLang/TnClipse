@@ -1,0 +1,17 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'antlr'
+
+repositories {
+	jcenter()
+	mavenCentral()
+	
+    maven {
+		url 'http://dl.bintray.com/iconmaster5326/maven'
+	}
+}
+
+dependencies {
+	compile 'info.iconmaster:typhon:0.1.0'
+	antlr "org.antlr:antlr4:4.5"
+}
