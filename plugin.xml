@@ -71,5 +71,46 @@
             file-extensions="tn">
       </file-association>
    </extension>
+   <extension
+         id="typhon"
+         name="Typhon Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="info.iconmaster.tnclipse.nature.TyphonNature">
+         </run>
+      </runtime>
+      <content-type
+            id="info.iconmaster.tnclipse.typhon">
+      </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            description="Options for the Typhon plugin."
+            id="info.iconmaster.tnclipse.typhon"
+            name="Typhon">
+      </category>
+      <command
+            categoryId="info.iconmaster.tnclipse.typhon"
+            defaultHandler="info.iconmaster.tnclipse.nature.TyphonNatureMenu"
+            description="Add or remove a Typhon project nature."
+            id="info.iconmaster.tnclipse.typhonNature"
+            name="Add/Remove Typhon Nature">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+         <command
+               commandId="info.iconmaster.tnclipse.typhonNature"
+               label="Add/Remove Typhon Nature"
+               style="push"
+               tooltip="Add or remove a Typhon project nature.">
+         </command>
+      </menuContribution>
+   </extension>
 
 </plugin>
