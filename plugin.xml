@@ -83,6 +83,9 @@
       <content-type
             id="info.iconmaster.tnclipse.typhon">
       </content-type>
+      <builder
+            id="info.iconmaster.tnclipse.typhon">
+      </builder>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -111,6 +114,16 @@
                tooltip="Add or remove a Typhon project nature.">
          </command>
       </menuContribution>
+   </extension>
+   <extension
+         id="info.iconmaster.tnclipse.typhon"
+         name="Typhon Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="info.iconmaster.tnclipse.nature.TyphonBuilder">
+         </run></builder>
    </extension>
 
 </plugin>
