@@ -126,5 +126,23 @@
                class="info.iconmaster.tnclipse.nature.TyphonBuilder">
          </run></builder>
    </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="true"
+            icon="icons/typhon_decorator.gif"
+            id="info.iconmaster.tnclipse.typhonNature"
+            label="Typhon Project"
+            lightweight="true"
+            location="TOP_RIGHT"
+            state="true">
+         <enablement>
+            <objectState
+                  name="nature"
+                  value="info.iconmaster.tnclipse.typhon">
+            </objectState>
+         </enablement>
+      </decorator>
+   </extension>
 
 </plugin>
