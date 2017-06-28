@@ -27,8 +27,8 @@ public class TyphonFileWizardPage extends WizardPage {
 
 	public TyphonFileWizardPage(ISelection selection) {
 		super("wizardPage");
-		setTitle("New Typhon File");
-		setDescription("Create a new Typhon file");
+		setTitle("Typhon File");
+		setDescription("Create a new Typhon file.");
 		this.selection = selection;
 	}
 

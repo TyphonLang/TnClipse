@@ -56,6 +56,14 @@
             Create a new Typhon file
          </description>
       </wizard>
+      <wizard
+            category="info.iconmaster.tnclipse"
+            class="info.iconmaster.tnclipse.wizards.projects.TyphonProjectWizard"
+            icon="icons/new_typhon_project.gif"
+            id="info.iconmaster.tnclipse.project.typhon"
+            name="Typhon project"
+            project="true">
+      </wizard>
    </extension>
    <extension
          point="org.eclipse.core.contenttype.contentTypes">
