@@ -109,6 +109,7 @@
             locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
          <command
                commandId="info.iconmaster.tnclipse.typhonNature"
+               icon="icons/typhon_logo.gif"
                label="Add/Remove Typhon Nature"
                style="push"
                tooltip="Add or remove a Typhon project nature.">
