@@ -11,7 +11,28 @@ repositories {
 	}
 }
 
+configurations {
+    getLibs
+}
+
 dependencies {
-	compile 'info.iconmaster:typhon:0.1.1'
+	compile 'info.iconmaster:typhon:0.1.2'
 	antlr "org.antlr:antlr4:4.5"
+	
+	getLibs 'info.iconmaster:typhon:0.1.2'
+	getLibs 'info.iconmaster:typhon:0.1.2:sources'
+	getLibs 'org.antlr:antlr4:4.5'
+	getLibs 'org.antlr:antlr4:4.5:sources'
+}
+
+task getLibs(type: Copy) {
+	from configurations.getLibs.resolve()
+	into 'lib/'
+	
+	rename 'typhon-([^-]*).jar', 'typhon.jar'
+	rename 'typhon-([^-]*)-sources.jar', 'typhon-sources.jar'
+}
+
+eclipseProject {
+	dependsOn getLibs
 }

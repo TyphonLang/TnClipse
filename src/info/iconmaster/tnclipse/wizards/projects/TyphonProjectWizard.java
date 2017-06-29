@@ -72,7 +72,7 @@ public class TyphonProjectWizard extends Wizard implements INewWizard {
 
 	private void actuallyPerformFinish(String name, String location, IProgressMonitor monitor) {
 		monitor.beginTask("Creating project " + name, 2);
-
+		
 		try {
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 			IProjectDescription desc = ResourcesPlugin.getWorkspace().newProjectDescription(name);
