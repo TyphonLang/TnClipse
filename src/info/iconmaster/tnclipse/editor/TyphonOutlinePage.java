@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -23,6 +23,7 @@ import info.iconmaster.typhon.language.Function;
 import info.iconmaster.typhon.language.Import;
 import info.iconmaster.typhon.language.Package;
 import info.iconmaster.typhon.language.StaticInitBlock;
+import info.iconmaster.typhon.language.TyphonLanguageEntity;
 import info.iconmaster.typhon.types.EnumType;
 import info.iconmaster.typhon.types.UserType;
 
@@ -30,6 +31,19 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 	private TyphonEditor editor;
 	private IEditorInput input;
 	private Package parsedPackage;
+	
+	private List<TyphonLanguageEntity> getTyphonChildren(Package p) {
+		List<TyphonLanguageEntity> a = new ArrayList<>();
+		
+		a.addAll(p.getSubpackges());
+		a.addAll(p.getImports());
+		a.addAll(p.getFields());
+		a.addAll(p.getFunctions());
+		a.addAll(p.getTypes());
+		a.addAll(p.getStaticInitBlocks());
+		
+		return a;
+	}
 	
 	private class TyphonContentProvider implements ITreeContentProvider {
 		@Override
@@ -62,19 +76,6 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 		@Override
 		public boolean hasChildren(Object element) {
 			return element instanceof Package;
-		}
-		
-		private List<Object> getTyphonChildren(Package p) {
-			List<Object> a = new ArrayList<>();
-			
-			a.addAll(p.getSubpackges());
-			a.addAll(p.getImports());
-			a.addAll(p.getFields());
-			a.addAll(p.getFunctions());
-			a.addAll(p.getTypes());
-			a.addAll(p.getStaticInitBlocks());
-			
-			return a;
 		}
 	}
 	
@@ -171,14 +172,28 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 	public void selectionChanged(SelectionChangedEvent event) {
 		super.selectionChanged(event);
 		
-		ISelection selection = event.getSelection();
-		if (selection.isEmpty())
+		TreeSelection sel = (TreeSelection) event.getSelection();
+		if (sel.isEmpty() || parsedPackage == null) {
 			editor.resetHighlightRange();
-		else {
+		} else {
 			try {
-				// TODO
-				// editor.setHighlightRange(start, length, true);
-			} catch (IllegalArgumentException x) {
+				List<TyphonLanguageEntity> items = getTyphonChildren(parsedPackage);
+				TyphonLanguageEntity e = (TyphonLanguageEntity) sel.getFirstElement();
+				
+				for (int i = 0; i < items.size(); i++) {
+					TyphonLanguageEntity item = items.get(i);
+					
+					if (item == e) {
+						editor.setHighlightRange(item.source.begin, item.source.end-item.source.begin, true);
+						break;
+					}
+					
+					if (item instanceof Package) {
+						items.addAll(getTyphonChildren((Package)item));
+					}
+				}
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
 				editor.resetHighlightRange();
 			}
 		}
