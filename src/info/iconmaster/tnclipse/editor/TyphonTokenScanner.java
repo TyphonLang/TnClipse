@@ -92,21 +92,17 @@ public class TyphonTokenScanner implements ITokenScanner {
 							rule = miniParser.globalAnnotation().tnName;
 						}
 						
-						if (rule.tnRawName == null) {
-							int max = -1;
-							
-							for (org.antlr.v4.runtime.Token token : rule.tnName) {
-								int index = token.getStopIndex();
-								if (index > max) {
-									max = index;
-								}
+						int max = -1;
+						
+						for (org.antlr.v4.runtime.Token token : rule.tnName) {
+							int index = token.getStopIndex();
+							if (index > max) {
+								max = index;
 							}
-							
-							if (max > -1) {
-								lastLength = 1 + max;
-							}
-						} else if (rule.tnRawName.getStopIndex() != -1) {
-							lastLength = 1 + rule.tnRawName.getStopIndex();
+						}
+						
+						if (max > -1) {
+							lastLength = 1 + max;
 						}
 					} catch (RecognitionException e) {
 						// do nothing
