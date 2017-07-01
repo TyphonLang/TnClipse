@@ -200,7 +200,7 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 					TyphonLanguageEntity item = items.get(i);
 					
 					if (item == e) {
-						editor.setHighlightRange(item.source.begin, item.source.end-item.source.begin, true);
+						editor.setHighlightRange(item.source.begin, item.source.end-item.source.begin+1, true);
 						break;
 					}
 					
