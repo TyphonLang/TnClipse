@@ -26,6 +26,7 @@ import info.iconmaster.typhon.language.Package;
 import info.iconmaster.typhon.language.StaticInitBlock;
 import info.iconmaster.typhon.language.TyphonLanguageEntity;
 import info.iconmaster.typhon.types.EnumType;
+import info.iconmaster.typhon.types.EnumType.EnumChoice;
 import info.iconmaster.typhon.types.Type;
 import info.iconmaster.typhon.types.UserType;
 
@@ -47,7 +48,43 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 		return a;
 	}
 	
+	private static class EnumChoiceWithData extends TyphonLanguageEntity {
+		EnumChoice choice;
+		EnumType parent;
+		
+		public EnumChoiceWithData(EnumChoice choice, EnumType parent) {
+			super(choice.tni, choice.source);
+			
+			this.choice = choice;
+			this.parent = parent;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			EnumChoiceWithData other = (EnumChoiceWithData) obj;
+			if (choice == null) {
+				if (other.choice != null)
+					return false;
+			} else if (!choice.equals(other.choice))
+				return false;
+			if (parent == null) {
+				if (other.parent != null)
+					return false;
+			} else if (!parent.equals(other.parent))
+				return false;
+			return true;
+		}
+	}
+	
 	private class TyphonContentProvider implements ITreeContentProvider {
+		
+		
 		@Override
 		public Object[] getElements(Object unused) {
 			return getTyphonChildren(parsedPackage).toArray();
@@ -57,8 +94,14 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 		public Object[] getChildren(Object e) {
 			if (e instanceof Package) {
 				return getTyphonChildren(((Package)e)).toArray();
+			} else if (e instanceof EnumType) {
+				List<TyphonLanguageEntity> a = getTyphonChildren(((Type)e).getTypePackage());
+				for (EnumChoice choice : ((EnumType)e).getChoices()) {
+					a.add(new EnumChoiceWithData(choice, ((EnumType)e)));
+				}
+				return a.toArray();
 			} else if (e instanceof Type) {
-					return getTyphonChildren(((Type)e).getTypePackage()).toArray();
+				return getTyphonChildren(((Type)e).getTypePackage()).toArray();
 			} else {
 				return new Object[0];
 			}
@@ -78,6 +121,8 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 					return input;
 				}
 				return p;
+			} else if (e instanceof EnumChoiceWithData) {
+				return ((EnumChoiceWithData)e).parent;
 			} else {
 				return null;
 			}
@@ -87,6 +132,8 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 		public boolean hasChildren(Object e) {
 			if (e instanceof Package) {
 				return !getTyphonChildren((Package)e).isEmpty();
+			} else if (e instanceof EnumType) {
+				return !getTyphonChildren(((EnumType)e).getTypePackage()).isEmpty() && !((EnumType)e).getChoices().isEmpty();
 			} else if (e instanceof Type) {
 				return !getTyphonChildren(((Type)e).getTypePackage()).isEmpty();
 			} else {
@@ -102,7 +149,7 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 				return TyphonIcons.ICON_PACKAGE;
 			} else if (e instanceof Function) {
 				return TyphonIcons.ICON_FUNC;
-			} else if (e instanceof Field) {
+			} else if (e instanceof Field || e instanceof EnumChoiceWithData) {
 				return TyphonIcons.ICON_FIELD;
 			} else if (e instanceof EnumType) {
 				return TyphonIcons.ICON_ENUM;
@@ -123,6 +170,8 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 				return ((Function)e).getName();
 			} else if (e instanceof Field) {
 				return ((Field)e).getName();
+			} else if (e instanceof EnumType) {
+				return ((EnumType)e).getName();
 			} else if (e instanceof UserType) {
 				return ((UserType)e).getName();
 			} else if (e instanceof Import.PackageImport) {
@@ -131,6 +180,8 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 				return ((Import.RawImport)e).getImportData();
 			} else if (e instanceof StaticInitBlock) {
 				return "<static init>";
+			} else if (e instanceof EnumChoiceWithData) {
+				return ((EnumChoiceWithData)e).choice.getName();
 			} else {
 				return "ERROR";
 			}
@@ -199,13 +250,18 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 				for (int i = 0; i < items.size(); i++) {
 					TyphonLanguageEntity item = items.get(i);
 					
-					if (item == e) {
+					if (item.equals(e)) {
 						editor.setHighlightRange(item.source.begin, item.source.end-item.source.begin+1, true);
 						break;
 					}
 					
 					if (item instanceof Package) {
 						items.addAll(getTyphonChildren((Package)item));
+					} else if (item instanceof EnumType) {
+						items.addAll(getTyphonChildren(((EnumType)item).getTypePackage()));
+						for (EnumChoice choice : ((EnumType)item).getChoices()) {
+							items.add(new EnumChoiceWithData(choice, (EnumType)item));
+						}
 					} else if (item instanceof Type) {
 						items.addAll(getTyphonChildren(((Type)item).getTypePackage()));
 					}
