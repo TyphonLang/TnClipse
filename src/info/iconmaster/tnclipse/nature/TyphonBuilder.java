@@ -15,10 +15,12 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.QualifiedName;
 
 import info.iconmaster.typhon.TyphonInput;
 import info.iconmaster.typhon.compiler.TyphonSourceReader;
 import info.iconmaster.typhon.errors.TyphonError;
+import info.iconmaster.typhon.language.Package;
 
 public class TyphonBuilder extends IncrementalProjectBuilder {
 
@@ -72,10 +74,14 @@ public class TyphonBuilder extends IncrementalProjectBuilder {
 	private void buildResource(IFile file) {
 		if ("tn".equals(file.getFileExtension())) {
 			try {
+				// clear the file
+				file.setSessionProperty(new QualifiedName("info.iconmaster.tnclipse", "package"), null);
 				file.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ZERO);
 				
+				// repopulate the file
 				TyphonInput tni = new TyphonInput();
-				TyphonSourceReader.parseFile(tni, new File(file.getLocationURI()));
+				Package p = TyphonSourceReader.parseFile(tni, new File(file.getLocationURI()));
+				file.setSessionProperty(new QualifiedName("info.iconmaster.tnclipse", "package"), p);
 				
 				for (TyphonError error : tni.errors) {
 					IMarker marker = file.createMarker(IMarker.PROBLEM);
