@@ -28,6 +28,8 @@ public class TyphonBuilder extends IncrementalProjectBuilder {
 	 * ID of this builder.
 	 */
 	public static final String ID = "info.iconmaster.tnclipse.typhon";
+	
+	public static final QualifiedName STORAGE_COMPILED_PACKAGE = new QualifiedName("info.iconmaster.tnclipse", "package");
 
 	@Override
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {
@@ -75,13 +77,13 @@ public class TyphonBuilder extends IncrementalProjectBuilder {
 		if ("tn".equals(file.getFileExtension())) {
 			try {
 				// clear the file
-				file.setSessionProperty(new QualifiedName("info.iconmaster.tnclipse", "package"), null);
+				file.setSessionProperty(STORAGE_COMPILED_PACKAGE, null);
 				file.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ZERO);
 				
 				// repopulate the file
 				TyphonInput tni = new TyphonInput();
 				Package p = TyphonSourceReader.parseFile(tni, new File(file.getLocationURI()));
-				file.setSessionProperty(new QualifiedName("info.iconmaster.tnclipse", "package"), p);
+				file.setSessionProperty(STORAGE_COMPILED_PACKAGE, p);
 				
 				for (TyphonError error : tni.errors) {
 					IMarker marker = file.createMarker(IMarker.PROBLEM);

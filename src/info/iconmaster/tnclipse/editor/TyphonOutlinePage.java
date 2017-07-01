@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -14,9 +16,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 
 import info.iconmaster.tnclipse.TyphonIcons;
+import info.iconmaster.tnclipse.nature.TyphonBuilder;
 import info.iconmaster.typhon.TyphonInput;
 import info.iconmaster.typhon.compiler.TyphonSourceReader;
 import info.iconmaster.typhon.language.Field;
@@ -87,6 +91,10 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 		
 		@Override
 		public Object[] getElements(Object unused) {
+			if (parsedPackage == null) {
+				return new Object[0];
+			}
+			
 			return getTyphonChildren(parsedPackage).toArray();
 		}
 
@@ -200,14 +208,31 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 	}
 	
 	public void update() {
+		parsedPackage = null;
+		
 		TyphonInput tni = new TyphonInput();
 		IDocument doc = editor.getDocumentProvider().getDocument(input);
-		if (doc != null) {
-			parsedPackage = TyphonSourceReader.parseString(tni, doc.get());
-		} else {
-			parsedPackage = null;
+		IFile file = null;
+		
+		// use the result of the Typhon builder if possible
+		if (input instanceof IFileEditorInput) {
+			file = ((IFileEditorInput) input).getFile();
 		}
 		
+		try {
+			if (file != null) {
+				parsedPackage = (Package) file.getSessionProperty(TyphonBuilder.STORAGE_COMPILED_PACKAGE);
+			}
+		} catch (CoreException e) {
+			// ignore; just fall back to parsing the document directly.
+		}
+		
+		// if we don't have builder data, parse the contents of the document
+		if (parsedPackage == null && doc != null) {
+			parsedPackage = TyphonSourceReader.parseString(tni, doc.get());
+		}
+		
+		// update the tree view
 		TreeViewer viewer = getTreeViewer();
 
 		if (viewer != null) {
