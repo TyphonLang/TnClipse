@@ -11,10 +11,10 @@ import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 
-public class TyphonConfiguration extends SourceViewerConfiguration {
+public class TyphonEditorConfiguration extends SourceViewerConfiguration {
 	TyphonTokenScanner scanner;
 
-	public TyphonConfiguration() {
+	public TyphonEditorConfiguration() {
 		scanner = new TyphonTokenScanner();
 	}
 

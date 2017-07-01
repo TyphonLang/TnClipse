@@ -11,7 +11,7 @@ public class TyphonEditor extends TextEditor {
 	
 	public TyphonEditor() {
 		super();
-		setSourceViewerConfiguration(new TyphonConfiguration());
+		setSourceViewerConfiguration(new TyphonEditorConfiguration());
 		setDocumentProvider(new TyphonDocumentProvider());
 	}
 	
