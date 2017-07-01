@@ -2,6 +2,7 @@ package info.iconmaster.tnclipse.editor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -25,6 +26,7 @@ import info.iconmaster.typhon.language.Package;
 import info.iconmaster.typhon.language.StaticInitBlock;
 import info.iconmaster.typhon.language.TyphonLanguageEntity;
 import info.iconmaster.typhon.types.EnumType;
+import info.iconmaster.typhon.types.Type;
 import info.iconmaster.typhon.types.UserType;
 
 public class TyphonOutlinePage extends ContentOutlinePage {
@@ -35,7 +37,7 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 	private List<TyphonLanguageEntity> getTyphonChildren(Package p) {
 		List<TyphonLanguageEntity> a = new ArrayList<>();
 		
-		a.addAll(p.getSubpackges());
+		a.addAll(p.getSubpackges().stream().filter((pp)->(pp.getName() != null)).collect(Collectors.toList()));
 		a.addAll(p.getImports());
 		a.addAll(p.getFields());
 		a.addAll(p.getFunctions());
@@ -55,6 +57,8 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 		public Object[] getChildren(Object e) {
 			if (e instanceof Package) {
 				return getTyphonChildren(((Package)e)).toArray();
+			} else if (e instanceof Type) {
+					return getTyphonChildren(((Type)e).getTypePackage()).toArray();
 			} else {
 				return new Object[0];
 			}
@@ -68,14 +72,26 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 					return input;
 				}
 				return p;
+			} else if (e instanceof Type) {
+				Package p = ((Type) e).getParent();
+				if (p == parsedPackage) {
+					return input;
+				}
+				return p;
 			} else {
 				return null;
 			}
 		}
 
 		@Override
-		public boolean hasChildren(Object element) {
-			return element instanceof Package;
+		public boolean hasChildren(Object e) {
+			if (e instanceof Package) {
+				return !getTyphonChildren((Package)e).isEmpty();
+			} else if (e instanceof Type) {
+				return !getTyphonChildren(((Type)e).getTypePackage()).isEmpty();
+			} else {
+				return false;
+			}
 		}
 	}
 	
@@ -190,6 +206,8 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 					
 					if (item instanceof Package) {
 						items.addAll(getTyphonChildren((Package)item));
+					} else if (item instanceof Type) {
+						items.addAll(getTyphonChildren(((Type)item).getTypePackage()));
 					}
 				}
 			} catch (IllegalArgumentException e) {
