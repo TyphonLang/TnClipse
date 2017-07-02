@@ -2,7 +2,6 @@ package info.iconmaster.tnclipse.nature;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -18,9 +17,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 
 import info.iconmaster.typhon.TyphonInput;
-import info.iconmaster.typhon.compiler.TyphonSourceReader;
 import info.iconmaster.typhon.errors.TyphonError;
-import info.iconmaster.typhon.language.Package;
+import info.iconmaster.typhon.model.Package;
+import info.iconmaster.typhon.model.TyphonModelReader;
 
 public class TyphonBuilder extends IncrementalProjectBuilder {
 
@@ -82,7 +81,7 @@ public class TyphonBuilder extends IncrementalProjectBuilder {
 				
 				// repopulate the file
 				TyphonInput tni = new TyphonInput();
-				Package p = TyphonSourceReader.parseFile(tni, new File(file.getLocationURI()));
+				Package p = TyphonModelReader.parseFile(tni, new File(file.getLocationURI()));
 				file.setSessionProperty(STORAGE_COMPILED_PACKAGE, p);
 				
 				for (TyphonError error : tni.errors) {

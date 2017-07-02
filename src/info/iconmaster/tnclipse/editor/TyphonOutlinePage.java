@@ -22,13 +22,13 @@ import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 import info.iconmaster.tnclipse.TyphonIcons;
 import info.iconmaster.tnclipse.nature.TyphonBuilder;
 import info.iconmaster.typhon.TyphonInput;
-import info.iconmaster.typhon.compiler.TyphonSourceReader;
-import info.iconmaster.typhon.language.Field;
-import info.iconmaster.typhon.language.Function;
-import info.iconmaster.typhon.language.Import;
-import info.iconmaster.typhon.language.Package;
-import info.iconmaster.typhon.language.StaticInitBlock;
-import info.iconmaster.typhon.language.TyphonLanguageEntity;
+import info.iconmaster.typhon.model.Field;
+import info.iconmaster.typhon.model.Function;
+import info.iconmaster.typhon.model.Import;
+import info.iconmaster.typhon.model.Package;
+import info.iconmaster.typhon.model.StaticInitBlock;
+import info.iconmaster.typhon.model.TyphonModelEntity;
+import info.iconmaster.typhon.model.TyphonModelReader;
 import info.iconmaster.typhon.types.EnumType;
 import info.iconmaster.typhon.types.EnumType.EnumChoice;
 import info.iconmaster.typhon.types.Type;
@@ -39,8 +39,8 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 	private IEditorInput input;
 	private Package parsedPackage;
 	
-	private List<TyphonLanguageEntity> getTyphonChildren(Package p) {
-		List<TyphonLanguageEntity> a = new ArrayList<>();
+	private List<TyphonModelEntity> getTyphonChildren(Package p) {
+		List<TyphonModelEntity> a = new ArrayList<>();
 		
 		a.addAll(p.getSubpackges().stream().filter((pp)->(pp.getName() != null)).collect(Collectors.toList()));
 		a.addAll(p.getImports());
@@ -52,7 +52,7 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 		return a;
 	}
 	
-	private static class EnumChoiceWithData extends TyphonLanguageEntity {
+	private static class EnumChoiceWithData extends TyphonModelEntity {
 		EnumChoice choice;
 		EnumType parent;
 		
@@ -103,7 +103,7 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 			if (e instanceof Package) {
 				return getTyphonChildren(((Package)e)).toArray();
 			} else if (e instanceof EnumType) {
-				List<TyphonLanguageEntity> a = getTyphonChildren(((Type)e).getTypePackage());
+				List<TyphonModelEntity> a = getTyphonChildren(((Type)e).getTypePackage());
 				for (EnumChoice choice : ((EnumType)e).getChoices()) {
 					a.add(new EnumChoiceWithData(choice, ((EnumType)e)));
 				}
@@ -229,7 +229,7 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 		
 		// if we don't have builder data, parse the contents of the document
 		if (parsedPackage == null && doc != null) {
-			parsedPackage = TyphonSourceReader.parseString(tni, doc.get());
+			parsedPackage = TyphonModelReader.parseString(tni, doc.get());
 		}
 		
 		// update the tree view
@@ -269,11 +269,11 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 			editor.resetHighlightRange();
 		} else {
 			try {
-				List<TyphonLanguageEntity> items = getTyphonChildren(parsedPackage);
-				TyphonLanguageEntity e = (TyphonLanguageEntity) sel.getFirstElement();
+				List<TyphonModelEntity> items = getTyphonChildren(parsedPackage);
+				TyphonModelEntity e = (TyphonModelEntity) sel.getFirstElement();
 				
 				for (int i = 0; i < items.size(); i++) {
-					TyphonLanguageEntity item = items.get(i);
+					TyphonModelEntity item = items.get(i);
 					
 					if (item.equals(e)) {
 						editor.setHighlightRange(item.source.begin, item.source.end-item.source.begin+1, true);

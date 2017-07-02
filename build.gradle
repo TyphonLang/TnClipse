@@ -16,11 +16,11 @@ configurations {
 }
 
 dependencies {
-	compile 'info.iconmaster:typhon:0.1.3'
+	compile 'info.iconmaster:typhon:0.2.0'
 	antlr "org.antlr:antlr4:4.5"
 	
-	getLibs 'info.iconmaster:typhon:0.1.3'
-	getLibs 'info.iconmaster:typhon:0.1.3:sources'
+	getLibs 'info.iconmaster:typhon:0.2.0'
+	getLibs 'info.iconmaster:typhon:0.2.0:sources'
 	getLibs 'org.antlr:antlr4:4.5'
 	getLibs 'org.antlr:antlr4:4.5:sources'
 }

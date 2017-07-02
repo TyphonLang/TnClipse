@@ -18,11 +18,11 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 import info.iconmaster.tnclipse.nature.TyphonBuilder;
 import info.iconmaster.typhon.TyphonInput;
-import info.iconmaster.typhon.compiler.TyphonSourceReader;
-import info.iconmaster.typhon.language.Field;
-import info.iconmaster.typhon.language.Function;
-import info.iconmaster.typhon.language.Package;
-import info.iconmaster.typhon.language.TyphonLanguageEntity;
+import info.iconmaster.typhon.model.Field;
+import info.iconmaster.typhon.model.Function;
+import info.iconmaster.typhon.model.Package;
+import info.iconmaster.typhon.model.TyphonModelEntity;
+import info.iconmaster.typhon.model.TyphonModelReader;
 import info.iconmaster.typhon.types.Type;
 
 public class TyphonContentAssist implements IContentAssistProcessor {
@@ -44,13 +44,13 @@ public class TyphonContentAssist implements IContentAssistProcessor {
 			
 			// if no builder information, parse the source file directly
 			TyphonInput tni = new TyphonInput();
-			p = TyphonSourceReader.parseString(tni, viewer.getDocument().get());
+			p = TyphonModelReader.parseString(tni, viewer.getDocument().get());
 		}
 		
 		return p.getParent();
 	}
 	
-	private List<String> getContentAssist(List<String> a, TyphonLanguageEntity e) {
+	private List<String> getContentAssist(List<String> a, TyphonModelEntity e) {
 		if (e instanceof Package) {
 			if (((Package) e).getName() != null) {
 				a.add(((Package) e).getName());
