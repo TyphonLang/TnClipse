@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.QualifiedName;
 
 import info.iconmaster.typhon.TyphonInput;
 import info.iconmaster.typhon.errors.TyphonError;
+import info.iconmaster.typhon.linker.TyphonLinker;
 import info.iconmaster.typhon.model.Package;
 import info.iconmaster.typhon.model.TyphonModelReader;
 
@@ -82,6 +83,8 @@ public class TyphonBuilder extends IncrementalProjectBuilder {
 				// repopulate the file
 				TyphonInput tni = new TyphonInput();
 				Package p = TyphonModelReader.parseFile(tni, new File(file.getLocationURI()));
+				TyphonLinker.link(p);
+				
 				file.setSessionProperty(STORAGE_COMPILED_PACKAGE, p);
 				
 				for (TyphonError error : tni.errors) {
