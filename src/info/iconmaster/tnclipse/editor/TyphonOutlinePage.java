@@ -52,40 +52,6 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 		return a;
 	}
 	
-	private static class EnumChoiceWithData extends TyphonModelEntity {
-		EnumChoice choice;
-		EnumType parent;
-		
-		public EnumChoiceWithData(EnumChoice choice, EnumType parent) {
-			super(choice.tni, choice.source);
-			
-			this.choice = choice;
-			this.parent = parent;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			EnumChoiceWithData other = (EnumChoiceWithData) obj;
-			if (choice == null) {
-				if (other.choice != null)
-					return false;
-			} else if (!choice.equals(other.choice))
-				return false;
-			if (parent == null) {
-				if (other.parent != null)
-					return false;
-			} else if (!parent.equals(other.parent))
-				return false;
-			return true;
-		}
-	}
-	
 	private class TyphonContentProvider implements ITreeContentProvider {
 		
 		
@@ -103,10 +69,9 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 			if (e instanceof Package) {
 				return getTyphonChildren(((Package)e)).toArray();
 			} else if (e instanceof EnumType) {
-				List<TyphonModelEntity> a = getTyphonChildren(((Type)e).getTypePackage());
-				for (EnumChoice choice : ((EnumType)e).getChoices()) {
-					a.add(new EnumChoiceWithData(choice, ((EnumType)e)));
-				}
+				ArrayList<TyphonModelEntity> a = new ArrayList<>();
+				a.addAll(((EnumType)e).getChoices());
+				a.addAll(getTyphonChildren(((Type)e).getTypePackage()));
 				return a.toArray();
 			} else if (e instanceof Type) {
 				return getTyphonChildren(((Type)e).getTypePackage()).toArray();
@@ -129,8 +94,8 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 					return input;
 				}
 				return p;
-			} else if (e instanceof EnumChoiceWithData) {
-				return ((EnumChoiceWithData)e).parent;
+			} else if (e instanceof EnumChoice) {
+				return ((EnumChoice)e).getParent();
 			} else {
 				return null;
 			}
@@ -157,7 +122,7 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 				return TyphonIcons.ICON_PACKAGE;
 			} else if (e instanceof Function) {
 				return TyphonIcons.ICON_FUNC;
-			} else if (e instanceof Field || e instanceof EnumChoiceWithData) {
+			} else if (e instanceof Field || e instanceof EnumChoice) {
 				return TyphonIcons.ICON_FIELD;
 			} else if (e instanceof EnumType) {
 				return TyphonIcons.ICON_ENUM;
@@ -188,8 +153,8 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 				return ((Import.RawImport)e).getImportData();
 			} else if (e instanceof StaticInitBlock) {
 				return "<static init>";
-			} else if (e instanceof EnumChoiceWithData) {
-				return ((EnumChoiceWithData)e).choice.getName();
+			} else if (e instanceof EnumChoice) {
+				return ((EnumChoice)e).getName();
 			} else {
 				return "ERROR";
 			}
@@ -284,9 +249,7 @@ public class TyphonOutlinePage extends ContentOutlinePage {
 						items.addAll(getTyphonChildren((Package)item));
 					} else if (item instanceof EnumType) {
 						items.addAll(getTyphonChildren(((EnumType)item).getTypePackage()));
-						for (EnumChoice choice : ((EnumType)item).getChoices()) {
-							items.add(new EnumChoiceWithData(choice, (EnumType)item));
-						}
+						items.addAll(((EnumType)item).getChoices());
 					} else if (item instanceof Type) {
 						items.addAll(getTyphonChildren(((Type)item).getTypePackage()));
 					}
