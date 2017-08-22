@@ -21,6 +21,7 @@ import info.iconmaster.typhon.errors.TyphonError;
 import info.iconmaster.typhon.linker.TyphonLinker;
 import info.iconmaster.typhon.model.Package;
 import info.iconmaster.typhon.model.TyphonModelReader;
+import info.iconmaster.typhon.types.TyphonTypeResolver;
 
 public class TyphonBuilder extends IncrementalProjectBuilder {
 
@@ -84,6 +85,7 @@ public class TyphonBuilder extends IncrementalProjectBuilder {
 				TyphonInput tni = new TyphonInput();
 				Package p = TyphonModelReader.parseFile(tni, new File(file.getLocationURI()));
 				TyphonLinker.link(p);
+				TyphonTypeResolver.resolve(p);
 				
 				file.setSessionProperty(STORAGE_COMPILED_PACKAGE, p);
 				
