@@ -2,6 +2,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'antlr'
 
+def typhonVersion = '0.2.3'
+
 repositories {
 	jcenter()
 	mavenCentral()
@@ -16,11 +18,11 @@ configurations {
 }
 
 dependencies {
-	compile 'info.iconmaster:typhon:0.2.2'
+	compile 'info.iconmaster:typhon:'+typhonVersion
 	antlr "org.antlr:antlr4:4.5"
 	
-	getLibs 'info.iconmaster:typhon:0.2.2'
-	getLibs 'info.iconmaster:typhon:0.2.2:sources'
+	getLibs 'info.iconmaster:typhon:'+typhonVersion
+	getLibs 'info.iconmaster:typhon:'+typhonVersion+':sources'
 	getLibs 'org.antlr:antlr4:4.5'
 	getLibs 'org.antlr:antlr4:4.5:sources'
 }
