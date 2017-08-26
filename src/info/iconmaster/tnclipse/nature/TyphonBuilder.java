@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 
 import info.iconmaster.typhon.TyphonInput;
+import info.iconmaster.typhon.compiler.TyphonCompiler;
 import info.iconmaster.typhon.errors.TyphonError;
 import info.iconmaster.typhon.linker.TyphonLinker;
 import info.iconmaster.typhon.model.Package;
@@ -86,6 +87,7 @@ public class TyphonBuilder extends IncrementalProjectBuilder {
 				Package p = TyphonModelReader.parseFile(tni, new File(file.getLocationURI()));
 				TyphonLinker.link(p);
 				TyphonTypeResolver.resolve(p);
+				TyphonCompiler.compile(p);
 				
 				file.setSessionProperty(STORAGE_COMPILED_PACKAGE, p);
 				
