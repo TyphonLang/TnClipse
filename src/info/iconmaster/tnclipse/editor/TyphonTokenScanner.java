@@ -14,7 +14,7 @@ import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
-import info.iconmaster.tnclipse.TyphonPlugin;
+import info.iconmaster.tnclipse.TnClipse;
 import info.iconmaster.typhon.antlr.TyphonLexer;
 import info.iconmaster.typhon.antlr.TyphonParser;
 import info.iconmaster.typhon.antlr.TyphonParser.PackageNameContext;
@@ -54,28 +54,28 @@ public class TyphonTokenScanner implements ITokenScanner {
 			switch (lastToken.getType()) {
 			case TyphonLexer.COMMENT:
 			case TyphonLexer.BLOCK_COMMENT:
-				color = TyphonPlugin.colorManager.getColorFromPreferences("editor.color.comment");
+				color = TnClipse.colorManager.getColorFromPreferences("editor.color.comment");
 				break;
 			case TyphonLexer.CHAR:
-				color = TyphonPlugin.colorManager.getColorFromPreferences("editor.color.char");
+				color = TnClipse.colorManager.getColorFromPreferences("editor.color.char");
 				break;
 			case TyphonLexer.DOC_COMMENT:
-				color = TyphonPlugin.colorManager.getColorFromPreferences("editor.color.doc_comment");
+				color = TnClipse.colorManager.getColorFromPreferences("editor.color.doc_comment");
 				break;
 			case TyphonLexer.NUMBER:
-				color = TyphonPlugin.colorManager.getColorFromPreferences("editor.color.number");
+				color = TnClipse.colorManager.getColorFromPreferences("editor.color.number");
 				break;
 			case TyphonLexer.STRING:
-				color = TyphonPlugin.colorManager.getColorFromPreferences("editor.color.string");
+				color = TnClipse.colorManager.getColorFromPreferences("editor.color.string");
 				break;
 			case TyphonLexer.UNKNOWN_TOKEN:
 			case TyphonLexer.WORD:
-				color = TyphonPlugin.colorManager.getColorFromPreferences("editor.color.default");
+				color = TnClipse.colorManager.getColorFromPreferences("editor.color.default");
 				break;
 			default:
 				if (lastToken.getText().equals("@") || lastToken.getText().equals("@@")) {
 					// it's an annotation; syntax highlighting should consume all tokens to the paren
-					color = TyphonPlugin.colorManager.getColorFromPreferences("editor.color.annotation");
+					color = TnClipse.colorManager.getColorFromPreferences("editor.color.annotation");
 					
 					TyphonLexer miniLexer = new TyphonLexer(new ANTLRInputStream(input.substring(lastToken.getStartIndex())));
 					TyphonParser miniParser = new TyphonParser(new CommonTokenStream(miniLexer));
@@ -111,11 +111,11 @@ public class TyphonTokenScanner implements ITokenScanner {
 					lexer = new TyphonLexer(new ANTLRInputStream(input.substring(lastToken.getStartIndex() + lastLength)));
 				} else if (Character.isAlphabetic(lastToken.getText().charAt(0))) {
 					// if it starts with a letter, it's a keyword
-					color = TyphonPlugin.colorManager.getColorFromPreferences("editor.color.keyword");
+					color = TnClipse.colorManager.getColorFromPreferences("editor.color.keyword");
 					style = SWT.BOLD;
 				} else {
 					// else, it's a normal symbol
-					color = TyphonPlugin.colorManager.getColorFromPreferences("editor.color.default");
+					color = TnClipse.colorManager.getColorFromPreferences("editor.color.default");
 				}
 			}
 			

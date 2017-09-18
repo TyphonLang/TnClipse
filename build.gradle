@@ -2,7 +2,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'antlr'
 
-def typhonVersion = '0.3.1'
+def typhonVersion = '0.3.3'
+def tnBoxVersion = '0.1.0'
 
 repositories {
 	jcenter()
@@ -19,10 +20,13 @@ configurations {
 
 dependencies {
 	compile 'info.iconmaster:typhon:'+typhonVersion
+	compile 'info.iconmaster:tnbox:'+tnBoxVersion
 	antlr "org.antlr:antlr4:4.5"
 	
 	getLibs 'info.iconmaster:typhon:'+typhonVersion
 	getLibs 'info.iconmaster:typhon:'+typhonVersion+':sources'
+	getLibs 'info.iconmaster:tnbox:'+tnBoxVersion
+	getLibs 'info.iconmaster:tnbox:'+tnBoxVersion+':sources'
 	getLibs 'org.antlr:antlr4:4.5'
 	getLibs 'org.antlr:antlr4:4.5:sources'
 }
@@ -33,6 +37,9 @@ task getLibs(type: Copy) {
 	
 	rename 'typhon-([^-]*).jar', 'typhon.jar'
 	rename 'typhon-([^-]*)-sources.jar', 'typhon-sources.jar'
+	
+	rename 'tnbox-([^-]*).jar', 'tnbox.jar'
+	rename 'tnbox-([^-]*)-sources.jar', 'tnbox-sources.jar'
 }
 
 eclipseProject {

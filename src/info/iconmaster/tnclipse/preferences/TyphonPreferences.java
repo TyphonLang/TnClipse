@@ -5,13 +5,13 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.swt.graphics.RGB;
 
-import info.iconmaster.tnclipse.TyphonPlugin;
+import info.iconmaster.tnclipse.TnClipse;
 
 public class TyphonPreferences extends AbstractPreferenceInitializer {
 
 	@Override
 	public void initializeDefaultPreferences() {
-		IPreferenceStore store = TyphonPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = TnClipse.getDefault().getPreferenceStore();
 		
 		store.setDefault("editor.color.default", StringConverter.asString(new RGB(0,0,0)));
 		store.setDefault("editor.color.number", StringConverter.asString(new RGB(128,128,0)));

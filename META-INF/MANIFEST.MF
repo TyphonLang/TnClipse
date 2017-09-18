@@ -19,5 +19,6 @@ Bundle-ClassPath: .,
  lib/org.abego.treelayout.core-1.0.1.jar,
  lib/reflections-0.9.11.jar,
  lib/ST4-4.0.8.jar,
- lib/typhon.jar
-Bundle-Activator: info.iconmaster.tnclipse.TyphonPlugin
+ lib/typhon.jar,
+ lib/tnbox.jar
+Bundle-Activator: info.iconmaster.tnclipse.TnClipse

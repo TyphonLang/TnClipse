@@ -28,6 +28,6 @@ public class ColorManager {
 	}
 	
 	public Color getColorFromPreferences(String pref) {
-		return getColor(StringConverter.asRGB(TyphonPlugin.getDefault().getPreferenceStore().getString(pref)));
+		return getColor(StringConverter.asRGB(TnClipse.getDefault().getPreferenceStore().getString(pref)));
 	}
 }

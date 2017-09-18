@@ -5,13 +5,13 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import info.iconmaster.tnclipse.TyphonPlugin;
+import info.iconmaster.tnclipse.TnClipse;
 
 public class PreferencePageEditorColors extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePageEditorColors() {
 		super(GRID);
-		setPreferenceStore(TyphonPlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(TnClipse.getDefault().getPreferenceStore());
 	}
 
 	@Override
