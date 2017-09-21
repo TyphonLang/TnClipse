@@ -24,6 +24,7 @@ public class TyphonTokenScanner implements ITokenScanner {
 	String input;
 
 	int lastOffset, lastLength;
+	boolean annotMode;
 	
 	@Override
 	public void setRange(IDocument document, int offset, int length) {
@@ -44,8 +45,10 @@ public class TyphonTokenScanner implements ITokenScanner {
 		lastLength = lastToken.getStopIndex() - lastToken.getStartIndex() + 1;
 		
 		if (lastToken.getType() == lastToken.EOF) {
+			annotMode = false;
 			return org.eclipse.jface.text.rules.Token.EOF;
 		} else if (lastToken.getType() == TyphonLexer.WHITESPACE) {
+			annotMode = false;
 			return org.eclipse.jface.text.rules.Token.WHITESPACE;
 		} else {
 			Color color;
@@ -69,53 +72,36 @@ public class TyphonTokenScanner implements ITokenScanner {
 				color = TnClipse.colorManager.getColorFromPreferences("editor.color.string");
 				break;
 			case TyphonLexer.UNKNOWN_TOKEN:
-			case TyphonLexer.WORD:
 				color = TnClipse.colorManager.getColorFromPreferences("editor.color.default");
+				break;
+			case TyphonLexer.WORD:
+				if (annotMode) {
+					color = TnClipse.colorManager.getColorFromPreferences("editor.color.annotation");
+				} else {
+					color = TnClipse.colorManager.getColorFromPreferences("editor.color.default");
+				}
 				break;
 			default:
 				if (lastToken.getText().equals("@") || lastToken.getText().equals("@@")) {
-					// it's an annotation; syntax highlighting should consume all tokens to the paren
+					// it's an annotation; this color should try to go to the end of the annot or to the paren (best effort)
 					color = TnClipse.colorManager.getColorFromPreferences("editor.color.annotation");
 					
-					TyphonLexer miniLexer = new TyphonLexer(new ANTLRInputStream(input.substring(lastToken.getStartIndex())));
-					TyphonParser miniParser = new TyphonParser(new CommonTokenStream(miniLexer));
+					annotMode = true;
+				} else if (lastToken.getText().equals("(")) {
+					color = TnClipse.colorManager.getColorFromPreferences("editor.color.default");
 					
-					miniLexer.removeErrorListeners();
-					miniParser.removeErrorListeners();
-					
-					try {
-						PackageNameContext rule;
-						
-						if (lastToken.getText().equals("@")) {
-							rule = miniParser.annotation().tnName;
-						} else {
-							rule = miniParser.globalAnnotation().tnName;
-						}
-						
-						int max = -1;
-						
-						for (org.antlr.v4.runtime.Token token : rule.tnName) {
-							int index = token.getStopIndex();
-							if (index > max) {
-								max = index;
-							}
-						}
-						
-						if (max > -1) {
-							lastLength = 1 + max;
-						}
-					} catch (RecognitionException e) {
-						// do nothing
-					}
-					
-					lexer = new TyphonLexer(new ANTLRInputStream(input.substring(lastToken.getStartIndex() + lastLength)));
+					annotMode = false;
 				} else if (Character.isAlphabetic(lastToken.getText().charAt(0))) {
 					// if it starts with a letter, it's a keyword
 					color = TnClipse.colorManager.getColorFromPreferences("editor.color.keyword");
 					style = SWT.BOLD;
 				} else {
 					// else, it's a normal symbol
-					color = TnClipse.colorManager.getColorFromPreferences("editor.color.default");
+					if (annotMode && lastToken.getText().equals(".")) {
+						color = TnClipse.colorManager.getColorFromPreferences("editor.color.annotation");
+					} else {
+						color = TnClipse.colorManager.getColorFromPreferences("editor.color.default");
+					}
 				}
 			}
 			

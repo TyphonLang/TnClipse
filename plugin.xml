@@ -152,5 +152,83 @@
          </enablement>
       </decorator>
    </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="info.iconmaster.tnclipse.launch.TnBoxLauncher"
+            delegateDescription="Launches the provided Typhon program in TnBox."
+            delegateName="TnBox"
+            id="info.iconmaster.tnclipse.tnbox"
+            modes="run"
+            name="TnBox">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="info.iconmaster.tnclipse.tnbox"
+            icon="icons/typhon_logo.gif"
+            id="info.iconmaster.tnclipse.tnbox">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="info.iconmaster.tnclipse.launch.TnBoxLauncherTabs"
+            description="Launches the provided Typhon program in TnBox."
+            id="info.iconmaster.tnclipse.tnbox.tab"
+            type="info.iconmaster.tnclipse.tnbox">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="info.iconmaster.tnclipse.launch.TnBoxLauncher"
+            icon="icons/typhon_logo.gif"
+            id="info.iconmaster.tnclipse.tnbox"
+            label="TnBox"
+            modes="run">
+         <configurationType
+               id="info.iconmaster.tnclipse.tnbox">
+         </configurationType>
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <and>
+                        <adapt
+                              type="org.eclipse.core.resources.IResource">
+                           <test
+                                 property="org.eclipse.core.resources.projectNature"
+                                 value="info.iconmaster.tnclipse.typhon">
+                           </test>
+                        </adapt>
+                     </and> </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.core.resources.IResource"
+            class="org.eclipse.core.runtime.IAdaptable">
+         <adapter
+               type="org.eclipse.debug.ui.actions.ILaunchable">
+         </adapter>
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.processFactories">
+      <processFactory
+            class="info.iconmaster.tnclipse.launch.TnBoxProcessFactory"
+            id="info.iconmaster.tnclipse.tnbox">
+      </processFactory>
+   </extension>
 
 </plugin>

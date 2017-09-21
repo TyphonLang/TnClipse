@@ -1,10 +1,14 @@
 package info.iconmaster.tnclipse.nature;
 
+import java.util.List;
+
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
+
+import info.iconmaster.typhon.model.Package;
 
 public class TyphonNature implements IProjectNature {
 	private IProject project;
