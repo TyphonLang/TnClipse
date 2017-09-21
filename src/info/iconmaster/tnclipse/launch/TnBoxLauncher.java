@@ -1,5 +1,9 @@
 package info.iconmaster.tnclipse.launch;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +15,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -20,6 +23,8 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.debug.internal.ui.DebugUIPlugin;
+import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.debug.ui.ILaunchShortcut2;
 import org.eclipse.jface.viewers.ISelection;
@@ -30,8 +35,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
-import org.eclipse.ui.ide.IDE;
 
+import info.iconmaster.tnbox.model.TnBoxEnvironment;
 import info.iconmaster.tnbox.model.TnBoxThread;
 import info.iconmaster.tnclipse.TnClipse;
 import info.iconmaster.tnclipse.TyphonIcons;
@@ -59,7 +64,7 @@ public class TnBoxLauncher implements ILaunchConfigurationDelegate, ILaunchShort
 			throw new CoreException(new Status(Status.ERROR, TnClipse.ID, "Process factory not configured correctly in the launch configuration"));
 		}
 		
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.getAttribute(LAUNCH_CONFIG_PROJECT, ""));
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.getAttribute(TnBoxLauncher.LAUNCH_CONFIG_PROJECT, ""));
 		
 		TyphonInput tni = (TyphonInput) project.getSessionProperty(TyphonBuilder.STORAGE_TNI);
 		if (tni == null) {
@@ -67,13 +72,11 @@ public class TnBoxLauncher implements ILaunchConfigurationDelegate, ILaunchShort
 			tni = (TyphonInput) project.getSessionProperty(TyphonBuilder.STORAGE_TNI);
 		}
 		
-		List<Function> fs = TyphonBuilder.fromIdentifierString(tni, configuration.getAttribute(LAUNCH_CONFIG_MAIN_FUNC, ""));
-		
+		List<Function> fs = TyphonBuilder.fromIdentifierString(tni, configuration.getAttribute(TnBoxLauncher.LAUNCH_CONFIG_MAIN_FUNC, ""));
 		Function f = fs.get(0);
 		
-		TnBoxThread thread = new TnBoxThread(f, new HashMap<>());
-		thread.run();
-		process.terminate();
+		TnBoxThread thread = new TnBoxThread(new TnBoxEnvironment(), f, new HashMap<>());
+		process.run(thread, true);
 	}
 	
 	@Override
@@ -106,7 +109,7 @@ public class TnBoxLauncher implements ILaunchConfigurationDelegate, ILaunchShort
 					if (project == null) {
 						return;
 					}
-						
+					
 					ElementListSelectionDialog dialog = new ElementListSelectionDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new LabelProvider() {
 						@Override
 						public String getText(Object element) {
@@ -185,7 +188,7 @@ public class TnBoxLauncher implements ILaunchConfigurationDelegate, ILaunchShort
 		}
 		
 		try {
-			launch(configs[0], mode, new Launch(configs[0], mode, null), null);
+			DebugUITools.buildAndLaunch(configs[0], mode, new NullProgressMonitor());
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

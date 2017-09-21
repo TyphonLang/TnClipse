@@ -1,11 +1,18 @@
 package info.iconmaster.tnclipse.launch;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -18,6 +25,9 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.debug.core.model.IStreamsProxy;
 
+import info.iconmaster.tnbox.model.TnBoxEnvironment;
+import info.iconmaster.tnbox.model.TnBoxThread;
+
 public class TnBoxProcessFactory implements IProcessFactory {
 	public static final String ID = "info.iconmaster.tnclipse.tnbox";
 	
@@ -28,7 +38,11 @@ public class TnBoxProcessFactory implements IProcessFactory {
 		private Map<String, String> attributes;
 		private boolean terminated;
 		
+		public TnBoxEnvironment environ;
+		public List<TnBoxThread> threads = new ArrayList<>();
+		
 		public TnBoxOutputStream out, err;
+		public Queue<Character> in = new ArrayDeque<>();
 		
 		public TnBoxProcess(ILaunch launch, String label, Map<String, String> attributes) {
 			this.launch = launch;
@@ -41,7 +55,9 @@ public class TnBoxProcessFactory implements IProcessFactory {
 			proxy = new IStreamsProxy() {
 				@Override
 				public void write(String input) throws IOException {
-					
+					for (char c : input.toCharArray()) {
+						in.add(c);
+					}
 				}
 				
 				@Override
@@ -57,6 +73,52 @@ public class TnBoxProcessFactory implements IProcessFactory {
 			
 			launch.addProcess(this);
 			fireEvent(DebugEvent.CREATE);
+		}
+		
+		public void run(TnBoxThread initThread, boolean setupEnviron) throws DebugException {
+			environ = initThread.environ;
+			threads.add(initThread);
+			
+			if (setupEnviron) {
+				environ.out = new PrintStream(new OutputStream() {
+					@Override
+					public void write(int b) throws IOException {
+						out.append(Character.toString((char) b));
+					}
+				}, true);
+				environ.err = new PrintStream(new OutputStream() {
+					@Override
+					public void write(int b) throws IOException {
+						err.append(Character.toString((char) b));
+					}
+				}, true);
+				environ.in = new InputStream() {
+					@Override
+					public int read() throws IOException {
+						return in.isEmpty() ? -1 : in.remove();
+					}
+				};
+			}
+			
+			Job job = Job.create(getLabel(), monitor->{
+				if (monitor == null) monitor = new NullProgressMonitor();
+				
+				while (true) {
+					if (isTerminated()) {
+						environ.out.flush(); environ.err.flush();
+						return;
+					}
+					
+					if (initThread.completed()) {
+						environ.out.flush(); environ.err.flush();
+						terminate();
+						return;
+					}
+					
+					initThread.step();
+				}
+			});
+			job.schedule();
 		}
 		
 		@Override

@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'antlr'
 
 def typhonVersion = '0.3.3'
-def tnBoxVersion = '0.1.0'
+def tnBoxVersion = '0.1.1'
 
 repositories {
 	jcenter()
