@@ -1,2 +1,3 @@
-# TnClipse
-An Eclipse plugin for the Typhon language.
+# TnClipse Feature
+
+This repository contains the source for TnClipse's feature.
