@@ -230,5 +230,14 @@
             id="info.iconmaster.tnclipse.tnbox">
       </processFactory>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="info.iconmaster.tnclipse.editor.TyphonPerspectiveFactory"
+            icon="icons/typhon_logo.gif"
+            id="info.iconmaster.tnclipse.typhon"
+            name="Typhon">
+      </perspective>
+   </extension>
 
 </plugin>

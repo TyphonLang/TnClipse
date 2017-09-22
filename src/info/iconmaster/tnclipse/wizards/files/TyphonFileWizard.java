@@ -28,6 +28,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 public class TyphonFileWizard extends Wizard implements INewWizard {
+	public static final String ID = "info.iconmaster.tnclipse.typhon";
+	
 	private TyphonFileWizardPage page;
 	private ISelection selection;
 
