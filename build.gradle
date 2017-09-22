@@ -2,8 +2,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'antlr'
 
-def typhonVersion = '0.3.3'
-def tnBoxVersion = '0.1.1'
+def typhonVersion = '0.3.5'
+def tnBoxVersion = '0.1.2'
 
 repositories {
 	jcenter()
