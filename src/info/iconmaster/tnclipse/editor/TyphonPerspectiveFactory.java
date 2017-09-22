@@ -40,5 +40,6 @@ public class TyphonPerspectiveFactory implements IPerspectiveFactory {
         layout.addShowViewShortcut("org.eclipse.ui.console.ConsoleView");
         
         layout.addActionSet("org.eclipse.debug.ui.launchActionSet");
+        layout.addActionSet("org.eclipse.ui.edit.text.actionSet.presentation");
 	}
 }
