@@ -32,6 +32,7 @@ import info.iconmaster.typhon.model.TyphonModelReader;
 import info.iconmaster.typhon.model.libs.CorePackage;
 import info.iconmaster.typhon.types.TemplateType;
 import info.iconmaster.typhon.types.TypeRef;
+import info.iconmaster.typhon.types.TyphonAnnotChecker;
 import info.iconmaster.typhon.types.TyphonTypeResolver;
 
 public class TyphonBuilder extends IncrementalProjectBuilder {
@@ -103,6 +104,7 @@ public class TyphonBuilder extends IncrementalProjectBuilder {
 				Package p = TyphonModelReader.parseFile(tni, new File(file.getLocationURI()));
 				TyphonLinker.link(p);
 				TyphonTypeResolver.resolve(p);
+				TyphonAnnotChecker.check(p);
 				TyphonCompiler.compile(p);
 				
 				file.setSessionProperty(STORAGE_COMPILED_PACKAGE, p);

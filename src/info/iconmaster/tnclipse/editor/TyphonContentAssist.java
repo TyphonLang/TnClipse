@@ -17,12 +17,10 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 import info.iconmaster.tnclipse.nature.TyphonBuilder;
-import info.iconmaster.typhon.TyphonInput;
 import info.iconmaster.typhon.model.Field;
 import info.iconmaster.typhon.model.Function;
 import info.iconmaster.typhon.model.Package;
 import info.iconmaster.typhon.model.TyphonModelEntity;
-import info.iconmaster.typhon.model.TyphonModelReader;
 import info.iconmaster.typhon.types.Type;
 
 public class TyphonContentAssist implements IContentAssistProcessor {
@@ -41,13 +39,9 @@ public class TyphonContentAssist implements IContentAssistProcessor {
 					// ignore, fall back
 				}
 			}
-			
-			// if no builder information, parse the source file directly
-			TyphonInput tni = new TyphonInput();
-			p = TyphonModelReader.parseString(tni, viewer.getDocument().get());
 		}
 		
-		return p.getParent();
+		return p == null ? null : p.getParent();
 	}
 	
 	private List<String> getContentAssist(List<String> a, TyphonModelEntity e) {
