@@ -22,7 +22,7 @@ import info.iconmaster.tnclipse.nature.TyphonBuilder;
 import info.iconmaster.tnclipse.nature.TyphonNature;
 
 public class TyphonProjectWizard extends Wizard implements INewWizard {
-	public static final String ID = "info.iconmaster.tnclipse.project.typhon";
+	public static final String ID = "info.iconmaster.tnclipse.wizards.projects.typhon";
 	
 	private TyphonProjectWizardPage page;
 	private ISelection selection;

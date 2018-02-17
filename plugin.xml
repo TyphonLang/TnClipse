@@ -49,7 +49,7 @@
             category="info.iconmaster.tnclipse"
             class="info.iconmaster.tnclipse.wizards.files.TyphonFileWizard"
             icon="icons/typhon_file.gif"
-            id="info.iconmaster.tnclipse.typhon"
+            id="info.iconmaster.tnclipse.wizards.files.typhon"
             name="Typhon file"
             project="false">
          <description>
@@ -60,9 +60,12 @@
             category="info.iconmaster.tnclipse"
             class="info.iconmaster.tnclipse.wizards.projects.TyphonProjectWizard"
             icon="icons/new_typhon_project.gif"
-            id="info.iconmaster.tnclipse.project.typhon"
+            id="info.iconmaster.tnclipse.wizards.projects.typhon"
             name="Typhon project"
             project="true">
+         <description>
+            Create a new Typhon project
+         </description>
       </wizard>
    </extension>
    <extension
