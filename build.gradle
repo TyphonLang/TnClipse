@@ -42,6 +42,18 @@ task getLibs(type: Copy) {
 	rename 'tnbox-([^-]*)-sources.jar', 'tnbox-sources.jar'
 }
 
+task getLibsDev(type: Copy) {
+	from '../Typhon/build/libs/'
+	from '../TnBox/build/libs/'
+	into 'lib/'
+	
+	rename 'typhon-([^-]*).jar', 'typhon.jar'
+	rename 'typhon-([^-]*)-sources.jar', 'typhon-sources.jar'
+	
+	rename 'tnbox-([^-]*).jar', 'tnbox.jar'
+	rename 'tnbox-([^-]*)-sources.jar', 'tnbox-sources.jar'
+}
+
 eclipseProject {
 	dependsOn getLibs
 }
