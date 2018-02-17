@@ -83,7 +83,7 @@
       </file-association>
    </extension>
    <extension
-         id="typhon"
+         id="info.iconmaster.tnclipse.typhon"
          name="Typhon Nature"
          point="org.eclipse.core.resources.natures">
       <runtime>
