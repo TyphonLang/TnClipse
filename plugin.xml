@@ -238,7 +238,7 @@
       <perspective
             class="info.iconmaster.tnclipse.editor.TyphonPerspectiveFactory"
             icon="icons/typhon_logo.gif"
-            id="info.iconmaster.tnclipse.typhon"
+            id="info.iconmaster.tnclipse.typhon.perspective"
             name="Typhon">
       </perspective>
    </extension>
