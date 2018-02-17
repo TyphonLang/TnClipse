@@ -99,6 +99,7 @@ public class TyphonBuilder extends IncrementalProjectBuilder {
 				// clear the file
 				file.setSessionProperty(STORAGE_COMPILED_PACKAGE, null);
 				file.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ZERO);
+				tni.errors.clear();
 				
 				// repopulate the file
 				Package p = TyphonModelReader.parseFile(tni, new File(file.getLocationURI()));
