@@ -1,9 +1,5 @@
 package info.iconmaster.tnclipse.launch;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,9 +17,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
-import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.debug.ui.ILaunchShortcut2;
@@ -75,7 +69,7 @@ public class TnBoxLauncher implements ILaunchConfigurationDelegate, ILaunchShort
 		List<Function> fs = TyphonBuilder.fromIdentifierString(tni, configuration.getAttribute(TnBoxLauncher.LAUNCH_CONFIG_MAIN_FUNC, ""));
 		Function f = fs.get(0);
 		
-		TnBoxThread thread = new TnBoxThread(new TnBoxEnvironment(), f, new HashMap<>());
+		TnBoxThread thread = new TnBoxThread(new TnBoxEnvironment(tni), f, new HashMap<>());
 		process.run(thread, true);
 	}
 	
