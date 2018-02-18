@@ -7,10 +7,14 @@
       <editor
             class="info.iconmaster.tnclipse.editor.TyphonEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
             extensions="tn"
             icon="icons/typhon_file.gif"
             id="info.iconmaster.tnclipse.editor.typhon"
             name="Typhon Editor">
+         <contentTypeBinding
+               contentTypeId="info.iconmaster.tnclipse.contenttype.typhon">
+         </contentTypeBinding>
       </editor>
    </extension>
    <extension
