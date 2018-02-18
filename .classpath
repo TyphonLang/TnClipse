@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="lib/tnbox.jar" sourcepath="lib/tnbox-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/antlr4-4.5.jar" sourcepath="lib/antlr4-4.5-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/antlr4-runtime-4.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/guava-20.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/javassist-3.21.0-GA.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.abego.treelayout.core-1.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/reflections-0.9.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ST4-4.0.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/typhon.jar" sourcepath="lib/typhon-sources.jar"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
