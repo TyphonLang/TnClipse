@@ -52,9 +52,12 @@
       <wizard
             category="info.iconmaster.tnclipse.wizards"
             class="info.iconmaster.tnclipse.wizards.files.TyphonFileWizard"
+            finalPerspective="info.iconmaster.tnclipse.typhon.perspective"
+            hasPages="true"
             icon="icons/typhon_file.gif"
             id="info.iconmaster.tnclipse.wizards.files.typhon"
             name="Typhon file"
+            preferredPerspectives="info.iconmaster.tnclipse.typhon.perspective"
             project="false">
          <description>
             Create a new Typhon file
@@ -63,9 +66,12 @@
       <wizard
             category="info.iconmaster.tnclipse.wizards"
             class="info.iconmaster.tnclipse.wizards.projects.TyphonProjectWizard"
+            finalPerspective="info.iconmaster.tnclipse.typhon.perspective"
+            hasPages="true"
             icon="icons/new_typhon_project.gif"
             id="info.iconmaster.tnclipse.wizards.projects.typhon"
             name="Typhon project"
+            preferredPerspectives="info.iconmaster.tnclipse.typhon.perspective"
             project="true">
          <description>
             Create a new Typhon project
