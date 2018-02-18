@@ -26,7 +26,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="info.iconmaster.tnclipse/info.iconmaster.tnclipse.editor"
+            category="info.iconmaster.tnclipse.preferences/info.iconmaster.tnclipse.preferences.editor"
             class="info.iconmaster.tnclipse.preferences.PreferencePageEditorColors"
             id="info.iconmaster.tnclipse.preferences.editor.colors"
             name="Colors">
@@ -37,7 +37,7 @@
             name="Typhon">
       </page>
       <page
-            category="info.iconmaster.tnclipse"
+            category="info.iconmaster.tnclipse.preferences"
             class="org.eclipse.ui.internal.dialogs.EmptyPreferencePage"
             id="info.iconmaster.tnclipse.preferences.editor"
             name="Editor">
