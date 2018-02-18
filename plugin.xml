@@ -5,12 +5,12 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            name="Typhon Editor"
+            class="info.iconmaster.tnclipse.editor.TyphonEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             extensions="tn"
             icon="icons/typhon_file.gif"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="info.iconmaster.tnclipse.editor.TyphonEditor"
-            id="info.iconmaster.tnclipse.typhon">
+            id="info.iconmaster.tnclipse.editor.typhon"
+            name="Typhon Editor">
       </editor>
    </extension>
    <extension
@@ -24,29 +24,29 @@
       <page
             category="info.iconmaster.tnclipse/info.iconmaster.tnclipse.editor"
             class="info.iconmaster.tnclipse.preferences.PreferencePageEditorColors"
-            id="info.iconmaster.tnclipse.editor.colors"
+            id="info.iconmaster.tnclipse.preferences.editor.colors"
             name="Colors">
       </page>
       <page
             class="org.eclipse.ui.internal.dialogs.EmptyPreferencePage"
-            id="info.iconmaster.tnclipse"
+            id="info.iconmaster.tnclipse.preferences"
             name="Typhon">
       </page>
       <page
             category="info.iconmaster.tnclipse"
             class="org.eclipse.ui.internal.dialogs.EmptyPreferencePage"
-            id="info.iconmaster.tnclipse.editor"
+            id="info.iconmaster.tnclipse.preferences.editor"
             name="Editor">
       </page>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            id="info.iconmaster.tnclipse"
+            id="info.iconmaster.tnclipse.wizards"
             name="Typhon">
       </category>
       <wizard
-            category="info.iconmaster.tnclipse"
+            category="info.iconmaster.tnclipse.wizards"
             class="info.iconmaster.tnclipse.wizards.files.TyphonFileWizard"
             icon="icons/typhon_file.gif"
             id="info.iconmaster.tnclipse.wizards.files.typhon"
@@ -57,7 +57,7 @@
          </description>
       </wizard>
       <wizard
-            category="info.iconmaster.tnclipse"
+            category="info.iconmaster.tnclipse.wizards"
             class="info.iconmaster.tnclipse.wizards.projects.TyphonProjectWizard"
             icon="icons/new_typhon_project.gif"
             id="info.iconmaster.tnclipse.wizards.projects.typhon"
@@ -73,17 +73,17 @@
       <content-type
             base-type="org.eclipse.core.runtime.text"
             file-extensions="tn"
-            id="info.iconmaster.tnclipse.typhon"
+            id="info.iconmaster.tnclipse.contenttype.typhon"
             name="Typhon source file"
             priority="high">
       </content-type>
       <file-association
-            content-type="info.iconmaster.tnclipse.typhon"
+            content-type="info.iconmaster.tnclipse.contenttype.typhon"
             file-extensions="tn">
       </file-association>
    </extension>
    <extension
-         id="info.iconmaster.tnclipse.typhon"
+         id="info.iconmaster.tnclipse.nature.typhon"
          name="Typhon Nature"
          point="org.eclipse.core.resources.natures">
       <runtime>
@@ -92,24 +92,24 @@
          </run>
       </runtime>
       <content-type
-            id="info.iconmaster.tnclipse.typhon">
+            id="info.iconmaster.tnclipse.contenttype.typhon">
       </content-type>
       <builder
-            id="info.iconmaster.tnclipse.typhon">
+            id="info.iconmaster.tnclipse.builder.typhon">
       </builder>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <category
             description="Options for the Typhon plugin."
-            id="info.iconmaster.tnclipse.typhon"
+            id="info.iconmaster.tnclipse.typhon.commands"
             name="Typhon">
       </category>
       <command
-            categoryId="info.iconmaster.tnclipse.typhon"
+            categoryId="info.iconmaster.tnclipse.typhon.commands"
             defaultHandler="info.iconmaster.tnclipse.nature.TyphonNatureMenu"
             description="Add or remove a Typhon project nature."
-            id="info.iconmaster.tnclipse.typhonNature"
+            id="info.iconmaster.tnclipse.typhon.commands.typhonNature"
             name="Add/Remove Typhon Nature">
       </command>
    </extension>
@@ -119,7 +119,7 @@
             allPopups="false"
             locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
          <command
-               commandId="info.iconmaster.tnclipse.typhonNature"
+               commandId="info.iconmaster.tnclipse.typhon.commands.typhonNature"
                icon="icons/typhon_logo.gif"
                label="Add/Remove Typhon Nature"
                style="push"
@@ -128,7 +128,7 @@
       </menuContribution>
    </extension>
    <extension
-         id="info.iconmaster.tnclipse.typhon"
+         id="info.iconmaster.tnclipse.builder.typhon"
          name="Typhon Builder"
          point="org.eclipse.core.resources.builders">
       <builder
@@ -142,7 +142,7 @@
       <decorator
             adaptable="true"
             icon="icons/typhon_decorator.gif"
-            id="info.iconmaster.tnclipse.typhonNature"
+            id="info.iconmaster.tnclipse.decorator.typhonNature"
             label="Typhon Project"
             lightweight="true"
             location="TOP_RIGHT"
@@ -150,7 +150,7 @@
          <enablement>
             <objectState
                   name="nature"
-                  value="info.iconmaster.tnclipse.typhon">
+                  value="info.iconmaster.tnclipse.nature.typhon">
             </objectState>
          </enablement>
       </decorator>
@@ -161,7 +161,7 @@
             delegate="info.iconmaster.tnclipse.launch.TnBoxLauncher"
             delegateDescription="Launches the provided Typhon program in TnBox."
             delegateName="TnBox"
-            id="info.iconmaster.tnclipse.tnbox"
+            id="info.iconmaster.tnclipse.launch.tnbox"
             modes="run"
             name="TnBox">
       </launchConfigurationType>
@@ -169,9 +169,9 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
-            configTypeID="info.iconmaster.tnclipse.tnbox"
+            configTypeID="info.iconmaster.tnclipse.launch.tnbox"
             icon="icons/typhon_logo.gif"
-            id="info.iconmaster.tnclipse.tnbox">
+            id="info.iconmaster.tnclipse.launch.tnbox.image">
       </launchConfigurationTypeImage>
    </extension>
    <extension
@@ -179,8 +179,8 @@
       <launchConfigurationTabGroup
             class="info.iconmaster.tnclipse.launch.TnBoxLauncherTabs"
             description="Launches the provided Typhon program in TnBox."
-            id="info.iconmaster.tnclipse.tnbox.tab"
-            type="info.iconmaster.tnclipse.tnbox">
+            id="info.iconmaster.tnclipse.launch.tnbox.tab"
+            type="info.iconmaster.tnclipse.launch.tnbox">
       </launchConfigurationTabGroup>
    </extension>
    <extension
@@ -188,11 +188,11 @@
       <shortcut
             class="info.iconmaster.tnclipse.launch.TnBoxLauncher"
             icon="icons/typhon_logo.gif"
-            id="info.iconmaster.tnclipse.tnbox"
+            id="info.iconmaster.tnclipse.launch.tnbox.shortcut"
             label="TnBox"
             modes="run">
          <configurationType
-               id="info.iconmaster.tnclipse.tnbox">
+               id="info.iconmaster.tnclipse.launch.tnbox">
          </configurationType>
          <contextualLaunch>
             <enablement>
@@ -207,7 +207,7 @@
                               type="org.eclipse.core.resources.IResource">
                            <test
                                  property="org.eclipse.core.resources.projectNature"
-                                 value="info.iconmaster.tnclipse.typhon">
+                                 value="info.iconmaster.tnclipse.nature.typhon">
                            </test>
                         </adapt>
                      </and> </iterate>
@@ -230,7 +230,7 @@
          point="org.eclipse.debug.core.processFactories">
       <processFactory
             class="info.iconmaster.tnclipse.launch.TnBoxProcessFactory"
-            id="info.iconmaster.tnclipse.tnbox">
+            id="info.iconmaster.tnclipse.launch.tnbox.process">
       </processFactory>
    </extension>
    <extension

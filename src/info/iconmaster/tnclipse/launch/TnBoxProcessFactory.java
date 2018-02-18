@@ -29,7 +29,7 @@ import info.iconmaster.tnbox.model.TnBoxEnvironment;
 import info.iconmaster.tnbox.model.TnBoxThread;
 
 public class TnBoxProcessFactory implements IProcessFactory {
-	public static final String ID = "info.iconmaster.tnclipse.tnbox";
+	public static final String ID = "info.iconmaster.tnclipse.launch.tnbox.process";
 	
 	public static class TnBoxProcess implements IProcess {
 		private ILaunch launch;

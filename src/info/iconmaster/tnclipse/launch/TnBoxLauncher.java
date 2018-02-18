@@ -42,7 +42,7 @@ import info.iconmaster.typhon.model.Function;
 import info.iconmaster.typhon.model.Package;
 
 public class TnBoxLauncher implements ILaunchConfigurationDelegate, ILaunchShortcut, ILaunchShortcut2 {
-	public static final String ID = "info.iconmaster.tnclipse.tnbox";
+	public static final String ID = "info.iconmaster.tnclipse.launch.tnbox";
 	
 	public static final String LAUNCH_CONFIG_PROJECT = "info.iconmaster.tnclipse.tnbox.project";
 	public static final String LAUNCH_CONFIG_MAIN_FUNC = "info.iconmaster.tnclipse.tnbox.mainFunc";

@@ -40,7 +40,7 @@ public class TyphonBuilder extends IncrementalProjectBuilder {
 	/**
 	 * ID of this builder.
 	 */
-	public static final String ID = "info.iconmaster.tnclipse.typhon";
+	public static final String ID = "info.iconmaster.tnclipse.builder.typhon";
 	
 	public static final QualifiedName STORAGE_TNI = new QualifiedName("info.iconmaster.tnclipse", "tni");
 	public static final QualifiedName STORAGE_COMPILED_PACKAGE = new QualifiedName("info.iconmaster.tnclipse", "package");
