@@ -1,6 +1,7 @@
 package info.iconmaster.tnclipse.launch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -86,7 +87,7 @@ public class TnBoxLauncher implements ILaunchConfigurationDelegate, ILaunchShort
 	private void launch(IResource resource, ILaunchConfiguration[] configs, String mode) {
 		if (configs == null) {
 			// TODO: ERROR
-			System.out.println("This isn't a Typhon project!");
+			System.err.println("This isn't a Typhon project!");
 			return;
 		}
 		
@@ -96,12 +97,26 @@ public class TnBoxLauncher implements ILaunchConfigurationDelegate, ILaunchShort
 			PlatformUI.getWorkbench().getDisplay().syncExec(()->{
 				try {
 					if (resource == null) {
+						// TODO
+						System.err.println("This isn't a Typhon project!");
 						return;
 					}
 					
-					IProject project = resource.getAdapter(IProject.class);
+					IProject project = resource.getProject();
 					if (project == null) {
+						// TODO
+						System.err.println("This isn't a Typhon project!");
 						return;
+					}
+					
+					project.build(IncrementalProjectBuilder.FULL_BUILD, null);
+					
+					List<Package> ps;
+					Package resourcePackage = (Package) resource.getSessionProperty(TyphonBuilder.STORAGE_COMPILED_PACKAGE);
+					if (resource instanceof IProject || resourcePackage == null) {
+						ps = TyphonBuilder.getPackagesInProject(project);
+					} else {
+						ps = Arrays.asList(resourcePackage);
 					}
 					
 					ElementListSelectionDialog dialog = new ElementListSelectionDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new LabelProvider() {
@@ -119,11 +134,6 @@ public class TnBoxLauncher implements ILaunchConfigurationDelegate, ILaunchShort
 					dialog.setTitle("Select Main Function");
 					dialog.setMessage("Select the main function to run via TnBox.");
 					
-					if (project.getSessionProperty(TyphonBuilder.STORAGE_TNI) == null) {
-						project.build(IncrementalProjectBuilder.FULL_BUILD, null);
-					}
-					
-					List<Package> ps = TyphonBuilder.getPackagesInProject(project);
 					if (ps != null) {
 						dialog.setElements(TyphonBuilder.getMainFunctions(ps).toArray());
 					}
