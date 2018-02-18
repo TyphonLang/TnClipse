@@ -44,8 +44,8 @@ import info.iconmaster.typhon.model.Package;
 public class TnBoxLauncher implements ILaunchConfigurationDelegate, ILaunchShortcut, ILaunchShortcut2 {
 	public static final String ID = "info.iconmaster.tnclipse.launch.tnbox";
 	
-	public static final String LAUNCH_CONFIG_PROJECT = "info.iconmaster.tnclipse.tnbox.project";
-	public static final String LAUNCH_CONFIG_MAIN_FUNC = "info.iconmaster.tnclipse.tnbox.mainFunc";
+	public static final String LAUNCH_CONFIG_PROJECT = "info.iconmaster.tnclipse.launch.tnbox.config.project";
+	public static final String LAUNCH_CONFIG_MAIN_FUNC = "info.iconmaster.tnclipse.launch.tnbox.config.mainFunc";
 	
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
